@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  documentation-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify agent documentation
+        run: |
+          test -f AGENTS.md
+          test -f backend/AGENTS.md
+          test -f frontend/AGENTS.md
+          test -f simulator/AGENTS.md
+          test -f docs/ARCHITECTURE.md
+          test -f docs/AUTOMATION.md
+          test -f docs/SECURITY.md
+
+      # Add Laravel and Next.js jobs after their actual manifests exist.
+      # Do not invent commands that are not present in package.json/composer.json.
