@@ -86,6 +86,22 @@ Test company access:
 
 The response should identify the expected GitHub username. The message that GitHub does not provide shell access is normal. If the wrong username appears, do not push.
 
+## Make Git use the Windows SSH configuration
+
+On some Windows installations, PowerShell's `ssh` command reads the SSH aliases correctly but Git uses Git for Windows' bundled SSH executable. If Git reports that it cannot resolve `github-personal` or `github-company`, configure the repository to use Windows OpenSSH explicitly:
+
+    git config --local core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe -F C:/Users/YOUR_WINDOWS_USERNAME/.ssh/config"
+
+Replace `YOUR_WINDOWS_USERNAME` with the Windows profile name. For this project, the command is:
+
+    git config --local core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe -F C:/Users/eduardo.tacorda/.ssh/config"
+
+This is a repository-local setting stored in `.git/config`. Configure it once per local repository; you do not need to repeat it before every push.
+
+Verify the saved setting:
+
+    git config --local --get core.sshCommand
+
 ## Configure a personal repository
 
 From the project directory:
@@ -106,6 +122,11 @@ Set the personal commit identity for this repository:
 Create a personal repository on GitHub, preferably private, without adding a README or other starter files. Then add its remote:
 
     git remote add origin "git@github-personal:YOUR_PERSONAL_USERNAME/YOUR_REPOSITORY.git"
+
+If Git cannot resolve the alias, run the Windows SSH configuration command from the previous section, then test access:
+
+    ssh -T git@github-personal
+    git ls-remote origin
 
 Verify it:
 
@@ -134,6 +155,10 @@ Use the company SSH alias in the remote:
 
     git remote add origin "git@github-company:COMPANY_OR_ORG/YOUR_REPOSITORY.git"
 
+Configure the Windows SSH command once in this company repository if needed:
+
+    git config --local core.sshCommand "C:/Windows/System32/OpenSSH/ssh.exe -F C:/Users/YOUR_WINDOWS_USERNAME/.ssh/config"
+
 Verify before pushing:
 
     git remote -v
@@ -161,6 +186,8 @@ Switch an existing remote to company:
     git config --local user.email "your-company-email@example.com"
 
 Always verify the remote and local identity after switching.
+
+The `core.sshCommand` setting normally stays the same when switching between personal and company repositories because the SSH config selects the key from the `github-personal` or `github-company` alias. Only the remote URL and local commit identity need to change.
 
 ## Keeping both remotes
 
@@ -195,6 +222,12 @@ Confirm:
 - The branch is correct.
 - The repository visibility is correct.
 - The push is authorized.
+
+For a repository already configured with `core.sshCommand`, future pushes only require:
+
+    git push
+
+Do not use `git config --global core.sshCommand` for this two-account setup. A local setting per repository prevents a personal key from being accidentally used for company work.
 
 ## Common problems
 
@@ -275,4 +308,3 @@ For two accounts, command-line SSH aliases are usually clearer because the remot
 - https://docs.github.com/en/get-started/git-basics/managing-remote-repositories
 - https://docs.github.com/en/get-started/git-basics/setting-your-username-in-git
 - https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository
-
