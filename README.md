@@ -23,6 +23,7 @@ This repository contains engineering standards and agent instructions for the Sm
 17. `docs/DECISIONS.md` — architecture decision records
 18. `docs/MVP_REQUIREMENTS.md` — MVP scope and acceptance criteria
 19. `docs/IMPLEMENTATION_PLAN.md` — phased delivery plan
+20. `docs/GITHUB_ACCOUNT_WORKFLOW.md` — personal/company GitHub account setup and switching
 
 ## Repository-specific instructions
 

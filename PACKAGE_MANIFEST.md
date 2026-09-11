@@ -11,6 +11,7 @@ This package is documentation and instruction infrastructure, not application so
 - CI documentation-presence check
 - Agent task template
 - MVP requirements and implementation plan
+- Personal/company GitHub account workflow
 
 ## Intentionally not included
 
